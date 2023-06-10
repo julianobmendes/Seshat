@@ -17,7 +17,7 @@ class Application:
         self.root = root
         self.telaprincipal()
         self.frames_de_tela()
-        self.botoes()
+        self.widget_frame()
         root.mainloop()
 
     def telaprincipal(self):
@@ -41,18 +41,31 @@ class Application:
         self.tabview.tab('Empresas').grid_columnconfigure(0, weight=1)
         self.tabview.tab('Configurações').grid_columnconfigure(0, weight=1)
 
-    def botoes(self):
+    def widget_frame(self):
         # Botões da aba 'Aplicações'.
         self.bt_01 = ctk.CTkButton(self.tabview.tab('Aplicações'), text='nonono')
         self.bt_01.place(relx=0.01, rely=0.01, relwidth=0.12, relheight=0.06)
         self.bt_02 = ctk.CTkButton(self.tabview.tab('Aplicações'), text='nonono')
         self.bt_02.place(relx=0.01, rely=0.08, relwidth=0.12, relheight=0.06)
         # Botões da aba 'Nomes'.
-        # Botões da aba 'Empresas'.
+        # Aba 'Empresa'.
+        """ botões """
         self.bt_cadastrar = ctk.CTkButton(self.tabview.tab('Empresas'), text='Cadastrar')
         self.bt_cadastrar.place(relx=0.01, rely=0.01, relwidth=0.12, relheight=0.06)
-        self.bt_03 = ctk.CTkButton(self.tabview.tab('Empresas'), text='nonono')
-        self.bt_03.place(relx=0.01, rely=0.08, relwidth=0.12, relheight=0.06)
+        self.limpar = ctk.CTkButton(self.tabview.tab('Empresas'), text='limpar')
+        self.limpar.place(relx=0.01, rely=0.08, relwidth=0.12, relheight=0.06)
+        """ Entrada de cadastro """
+        # Nome da empresa
+        self.lb_nomeemp = ctk.CTkLabel(self.tabview.tab('Empresas'), text='Nome Empresa:')
+        self.lb_nomeemp.place(relx=0.2, rely=0.009)
+        self.nome_empr = ctk.CTkEntry(self.tabview.tab('Empresas'))
+        self.nome_empr.place(relx=0.2, rely=0.07, relwidth=0.78)
+        # CNPJ da empresa
+        self.lb_cnpjemp = ctk.CTkLabel(self.tabview.tab('Empresas'), text='CNPJ:')
+        self.lb_cnpjemp.place(relx=0.2, rely=0.14)
+        self.cnpj_empr = ctk.CTkEntry(self.tabview.tab('Empresas'))
+        self.cnpj_empr.place(relx=0.2, rely=0.201, relwidth=0.78)
+
         # Botões da aba 'Configurações'.
 
 
