@@ -4,6 +4,7 @@
 com vários facilitadores e recurso de edição de documentos a funções na empresa
 """
 import customtkinter as ctk
+from tkinter import ttk
 
 # Cria a apararencia inicial do programa.
 ctk.set_appearance_mode('dark')
@@ -42,7 +43,9 @@ class Application:
         self.tabview.tab('Configurações').grid_columnconfigure(0, weight=1)
 
     def widget_frame(self):
-        # Botões da aba 'Aplicações'.
+        # Aba 'Aplicações'.
+        """ botões
+                    """
         self.bt_01 = ctk.CTkButton(self.tabview.tab('Aplicações'), text='nonono')
         self.bt_01.place(relx=0.01, rely=0.01, relwidth=0.12, relheight=0.06)
         self.bt_02 = ctk.CTkButton(self.tabview.tab('Aplicações'), text='nonono')
@@ -52,13 +55,14 @@ class Application:
         # Aba 'Empresa'.
         """ botões
                     """
-        self.bt_cadastrar = ctk.CTkButton(self.tabview.tab('Empresa'), text='Cadastrar')
+        self.bt_cadastrar = ctk.CTkButton(self.tabview.tab('Empresa'),
+                                          text='Cadastrar')
         self.bt_cadastrar.place(relx=0.01, rely=0.08, relwidth=0.16, relheight=0.06)
         self.limpar = ctk.CTkButton(self.tabview.tab('Empresa'), text='limpar')
         self.limpar.place(relx=0.01, rely=0.16, relwidth=0.16, relheight=0.06)
         """ Entrada de cadastro 
                                 """
-        # Nome da empresa
+        # Nome da empresa / Razão Social
         self.lb_rsocial = ctk.CTkLabel(self.tabview.tab('Empresa'), text='Razão Social')
         self.lb_rsocial.place(relx=0.2, rely=0.009)
         self.rsocial_empr = ctk.CTkEntry(self.tabview.tab('Empresa'))
@@ -67,7 +71,8 @@ class Application:
         # CNPJ da empresa
         self.lb_cnpj = ctk.CTkLabel(self.tabview.tab('Empresa'), text='CNPJ')
         self.lb_cnpj.place(relx=0.2, rely=0.14)
-        self.cnpj_empr = ctk.CTkEntry(self.tabview.tab('Empresa'))
+        self.cnpj_empr = ctk.CTkEntry(self.tabview.tab('Empresa'),
+                                      placeholder_text='digite só números')
         self.cnpj_empr.place(relx=0.2, rely=0.201, relwidth=0.23)
 
         # Nome fantasia da empresa
@@ -117,6 +122,13 @@ class Application:
         self.lb_uf_emp.place(relx=0.9, rely=0.405)
         self.uf_emp = ctk.CTkEntry(self.tabview.tab('Empresa'))
         self.uf_emp.place(relx=0.9, rely=0.477, relwidth=0.08)
+
+        """ Entrada de dados de empresa
+                                        """
+        self.lb_empresa = ctk.CTkLabel(self.tabview.tab('Empresa'), text='Dados de empresa')
+        self.lb_empresa.place(relx=0.1, rely=0.58)
+        self.lista_empresa = ttk.Treeview(self.tabview.tab('Empresa'), )
+        self.lista_empresa.place(relx=0.1, rely=0.65, relwidth=0.88)
 
 
         # Botões da aba 'Configurações'.
