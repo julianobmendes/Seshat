@@ -38,7 +38,8 @@ class Funcs:
         self.conecta_bd()
         self.conn.execute("""
             CREATE TABLE IF NOT EXISTS empresa (
-            cod_empresa BIGINT PRIMARY KEY,
+            cod_empresa INT PRIMARY KEY,
+            statu INT(1)
             razao_social CHAR(65) NOT NULL,
             cnpj BIGINT(14) NOT NULL,
             nome_fantasia CHAR(45) NOT NULL,
@@ -54,7 +55,13 @@ class Funcs:
         """)
         self.conn.commit(), print("Banco de dados Criado!!!")
         self.desconecta_bd()
+    def codigo_empresa(self):
+        self.cnpj_temp = self.cnpj_empr.get()
+        self.cod_temp = int(str(self.cnpj_def)[:8])
+        return self.cod_temp
     def add_empresa(self):
+        self.cod_empresa = self.codigo_empresa
+        self.statu = int(1)
         self.rsocial_empr = self.rsocial_empr.get()
         self.cnpj_empr = self.cnpj_empr.get()
         self.nfantasia = self.nfantasia.get()
@@ -66,6 +73,7 @@ class Funcs:
         self.bairro_emp = self.bairro_emp.get()
         self.cidade_emp = self.cidade_emp.get()
         self.uf_emp = self.uf_emp.get()
+    def mostra_empresa(self):
 
 
 
