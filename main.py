@@ -33,13 +33,13 @@ class Funcs:
         self.conn = sqlite3.connect("seshatbank.db")
         self.cursor = self.conn.cursor(), print("Conectando ao Banco...")
     def desconecta_bd(self): # Desconecta ao banco de dados
-        self.conn.close(), print("Desconectado do banco")
+        self.cursor.close(), print("Desconectado do banco")
     def montaTabelas(self):
         self.conecta_bd()
-        self.conn.execute("""
+        self.cursor.execute("""
             CREATE TABLE IF NOT EXISTS empresa (
             cod_empresa INT PRIMARY KEY,
-            statu INT(1)
+            stat INT(1),
             razao_social CHAR(65) NOT NULL,
             cnpj BIGINT(14) NOT NULL,
             nome_fantasia CHAR(45) NOT NULL,
@@ -57,28 +57,44 @@ class Funcs:
         self.desconecta_bd()
     def codigo_empresa(self):
         self.cnpj_temp = self.cnpj_empr.get()
-        self.cod_temp = int(str(self.cnpj_def)[:8])
+        self.cod_temp = int(str(self.cnpj_temp)[:8])
         return self.cod_temp
     def add_empresa(self):
-        self.cod_empresa = self.codigo_empresa
-        self.statu = int(1)
-        self.rsocial_empr = self.rsocial_empr.get()
-        self.cnpj_empr = self.cnpj_empr.get()
-        self.nfantasia = self.nfantasia.get()
-        self.lagradouro = self.lagradouro.get()
-        self.lagrad_numero = self.lagrad_numero.get()
-        self.compl_end = self.compl_end.get()
-        self.cep_empr = self.cep_empr.get()
-        self.telefone_emp = self.telefone_emp.get()
-        self.bairro_emp = self.bairro_emp.get()
-        self.cidade_emp = self.cidade_emp.get()
-        self.uf_emp = self.uf_emp.get()
+        self.cod_empresa = self.codigo_empresa()
+        self.stat = int(1)
+        self.rsocial_e = self.rsocial_empr.get()
+        self.cnpj_e = self.cnpj_empr.get()
+        self.nfant = self.nfantasia.get()
+        self.lagrad = self.lagradouro.get()
+        self.lagrad_num = self.lagrad_numero.get()
+        self.compl_e = self.compl_end.get()
+        self.cep_e = self.cep_empr.get()
+        self.telefone_e = self.telefone_emp.get()
+        self.bairro_e = self.bairro_emp.get()
+        self.cidade_e = self.cidade_emp.get()
+        self.uf_e = self.uf_emp.get()
+        self.conecta_bd()
+        self.conn.execute("""
+            INSERT INTO empresa (cod_empresa, stat, razao_social, cnpj,
+                nome_fantasia, end_empresa, num_end, end_complemento,
+                cep, telefone_empresa, bairro, cidade, uf)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
+            (self.cod_empresa, self.stat, self.rsocial_e, self.cnpj_e,
+            self.nfant, self.lagrad, self.lagrad_num, self.compl_e,
+            self.cep_e, self.telefone_e, self.bairro_e, self.cidade_e, self.uf_e)
+            )
+        self.conn.commit()
+        self.desconecta_bd()
+        self.limpa_tela()
+
     def mostra_empresa(self):
+        pass
 
 
 
 class Application(Funcs):
     def __init__(self):
+        super().__init__()
         self.root = root
         self.telaprincipal()
         self.frames_de_tela()
@@ -121,7 +137,7 @@ class Application(Funcs):
         """ botões
                     """
         self.bt_cadastrar = ctk.CTkButton(self.tabview.tab('Empresa'),
-                                          text='Cadastrar')
+                                          text='Cadastrar', command=self.add_empresa)
         self.bt_cadastrar.place(relx=0.01, rely=0.08, relwidth=0.16, relheight=0.06)
         self.limpar = ctk.CTkButton(self.tabview.tab('Empresa'),
                                     text='limpar', command=self.limpa_tela)
@@ -197,10 +213,10 @@ class Application(Funcs):
 
         """ Entrada de dados de empresa
                                         """
-        self.lb_empresa = ctk.CTkLabel(self.tabview.tab('Empresa'), text='Dados de empresa')
-        self.lb_empresa.place(relx=0.1, rely=0.614)
-        self.lista_empresa = ttk.Treeview(self.tabview.tab('Empresa'), )
-        self.lista_empresa.place(relx=0.1, rely=0.662, relwidth=0.88)
+        #self.lb_empresa = ctk.CTkLabel(self.tabview.tab('Empresa'), text='Dados de empresa')
+        #self.lb_empresa.place(relx=0.1, rely=0.614)
+        #self.lista_empresa = ttk.Treeview(self.tabview.tab('Empresa'), )
+        #self.lista_empresa.place(relx=0.1, rely=0.662, relwidth=0.88)
 
 
         # Botões da aba 'Configurações'.
