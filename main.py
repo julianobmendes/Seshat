@@ -30,10 +30,12 @@ class Funcs:
         self.uf_emp.delete(0, tkinter.END)
 
     def conecta_bd(self): # Conecta ao banco de dados
-        self.conn = sqlite3.connect("seshatbank.db")
-        self.cursor = self.conn.cursor(), print("Conectando ao Banco...")
+        conn = sqlite3.connect("seshatbank.db")
+        self.cursor = conn.cursor()
+        print("Conectando ao Banco...")
     def desconecta_bd(self): # Desconecta ao banco de dados
-        self.cursor.close(), print("Desconectado do banco")
+        self.cursor.close()
+        print("Desconectado do banco")
     def montaTabelas(self):
         self.conecta_bd()
         self.cursor.execute("""
@@ -53,7 +55,8 @@ class Funcs:
             uf CHAR(3)
             );
         """)
-        self.conn.commit(), print("Banco de dados Criado!!!")
+        self.cursor.connection.commit()
+        print("Banco de dados Criado!!!")
         self.desconecta_bd()
     def codigo_empresa(self):
         self.cnpj_temp = self.cnpj_empr.get()
@@ -74,7 +77,7 @@ class Funcs:
         self.cidade_e = self.cidade_emp.get()
         self.uf_e = self.uf_emp.get()
         self.conecta_bd()
-        self.conn.execute("""
+        self.cursor.execute("""
             INSERT INTO empresa (cod_empresa, stat, razao_social, cnpj,
                 nome_fantasia, end_empresa, num_end, end_complemento,
                 cep, telefone_empresa, bairro, cidade, uf)
@@ -83,12 +86,29 @@ class Funcs:
             self.nfant, self.lagrad, self.lagrad_num, self.compl_e,
             self.cep_e, self.telefone_e, self.bairro_e, self.cidade_e, self.uf_e)
             )
-        self.conn.commit()
+        self.cursor.connection.commit()
         self.desconecta_bd()
         self.limpa_tela()
 
-    def mostra_empresa(self):
-        pass
+    def verificar_empresas(self):
+        # Conecta ao banco de dados
+        self.conecta_bd()
+
+        # Executa a consulta SQL para verificar empresas cadastradas com stat = 1
+        self.cursor.execute("SELECT cod_empresa, nome_fantasia FROM empresa WHERE stat = 1")
+        empresa_temp = self.cursor.fetchall()
+
+        # Desconecta do banco de dados
+        self.desconecta_bd()
+
+        # Monta a label com as informações das empresas encontradas
+        for index, (cod_empresa, nome_fantasia) in enumerate(empresa_temp):
+            label = ctk.CTkLabel(
+                self.tabview.tab('Empresa'),
+                text=f"Cod : {cod_empresa}          Nome : {nome_fantasia}"
+            )
+            rely = 0.662 + index * 0.05  # Ajusta o valor vertical com base no índice
+            label.place(relx=0.0, rely=rely, relwidth=0.88)
 
 
 
@@ -100,6 +120,7 @@ class Application(Funcs):
         self.frames_de_tela()
         self.widget_frame()
         self.montaTabelas()
+        self.verificar_empresas()
         root.mainloop()
 
     def telaprincipal(self):
@@ -213,6 +234,7 @@ class Application(Funcs):
 
         """ Entrada de dados de empresa
                                         """
+        self.verificar_empresas()
         #self.lb_empresa = ctk.CTkLabel(self.tabview.tab('Empresa'), text='Dados de empresa')
         #self.lb_empresa.place(relx=0.1, rely=0.614)
         #self.lista_empresa = ttk.Treeview(self.tabview.tab('Empresa'), )
