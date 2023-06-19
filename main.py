@@ -103,12 +103,18 @@ class Funcs:
 
         # Monta a label com as informações das empresas encontradas
         for index, (cod_empresa, nome_fantasia) in enumerate(empresa_temp):
-            label = ctk.CTkLabel(
+            button = ctk.CTkButton(
                 self.tabview.tab('Empresa'),
-                text=f"Cod : {cod_empresa}          Nome : {nome_fantasia}"
+                text=f"Cod : {cod_empresa}          Nome : {nome_fantasia}",
+                fg_color='transparent',
+                hover_color='grey10',
+                font=ctk.CTkFont(family="Times New Roman",
+                                 slant="italic",
+                                 size=16,
+                                 weight="bold")
             )
-            rely = 0.662 + index * 0.05  # Ajusta o valor vertical com base no índice
-            label.place(relx=0.0, rely=rely, relwidth=0.88)
+            rely = 0.679 + index * 0.08  # Ajusta o valor vertical com base no índice
+            button.place(relx=0.2, rely=rely, relwidth=0.58)
 
 
 
@@ -234,9 +240,11 @@ class Application(Funcs):
 
         """ Entrada de dados de empresa
                                         """
+
+        self.lb_empresa = ctk.CTkLabel(self.tabview.tab('Empresa'), text='Dados de empresa cadastradas:')
+        self.lb_empresa.place(relx=0.2, rely=0.618)
         self.verificar_empresas()
-        #self.lb_empresa = ctk.CTkLabel(self.tabview.tab('Empresa'), text='Dados de empresa')
-        #self.lb_empresa.place(relx=0.1, rely=0.614)
+
         #self.lista_empresa = ttk.Treeview(self.tabview.tab('Empresa'), )
         #self.lista_empresa.place(relx=0.1, rely=0.662, relwidth=0.88)
 
